@@ -14,6 +14,10 @@ public class AccountDAO {
 
     // add a new method: findAccounts()
 
+    /**
+     * Method to find all accounts created.
+     * @return list with a all account objects
+     */
     public List<Account> findAccounts(){
         List<Account> myAccounts = new ArrayList<>();
 
