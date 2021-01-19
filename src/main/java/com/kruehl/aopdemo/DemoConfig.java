@@ -1,4 +1,4 @@
-package aopdemo;
+package com.kruehl.aopdemo;
 
 
 import org.springframework.context.annotation.ComponentScan;
@@ -7,7 +7,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan("")
+@ComponentScan("com.kruehl.aopdemo")
 public class DemoConfig {
+
+
 
 }
