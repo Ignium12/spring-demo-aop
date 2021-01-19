@@ -2,20 +2,37 @@ package com.kruehl.aopdemo.aspect;
 
 import com.kruehl.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Aspect
 @Component
 @Order(2)
 public class MyDemoLoggingAspect {
 
+    // add a new advice for @AfterReturning on the findAccounts method
+
+    @AfterReturning(pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
+            returning = "result")
+    public void afterReturningFindAccountsAdvice(
+            JoinPoint joinPoint, List<Account> result) {
+        String method = joinPoint.getSignature().toShortString();
+        System.out.println("\n=====>> Executing @AfterReturning on method: " + method);
+
+        // print out the results of the method call
+        System.out.println("\n=====>> result is: " + result);
+    }
+
+
     // @Before advice
     @Before("com.kruehl.aopdemo.aspect.AopExpressions.forDaoPackageNoGetterNoSetter()")
-    public void beforeAddAccountAdvice(JoinPoint joinPoint){
+    public void beforeAddAccountAdvice(JoinPoint joinPoint) {
         System.out.println("\n =====>> Executing @Before advice on method");
 
         // display the method signature
@@ -29,10 +46,10 @@ public class MyDemoLoggingAspect {
         Object[] args = joinPoint.getArgs();
 
         // loop thru
-        for(Object tempArg : args){
+        for (Object tempArg : args) {
             System.out.println(tempArg);
 
-            if(tempArg instanceof Account){
+            if (tempArg instanceof Account) {
                 // downcast and print Account specific stuff
                 Account account = (Account) tempArg;
 
