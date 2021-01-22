@@ -2,10 +2,7 @@ package com.kruehl.aopdemo.aspect;
 
 import com.kruehl.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -17,11 +14,26 @@ import java.util.List;
 @Order(2)
 public class MyDemoLoggingAspect {
 
-    @AfterThrowing(pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
-    throwing = "exc")
-    public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable exc){
+    @After("execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))")
+    public void afetrFInallyFindAccountsAdvice(JoinPoint joinPoint) {
+
         // print out which method we are advising on
-        String method = joinPoint.getSignature().toShortString();
+        String method = joinPoint
+                .getSignature()
+                .toShortString();
+        System.out.println("\n=====>> Executing @After(Finally) on method: "
+                + method);
+    }
+
+
+    @AfterThrowing(pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
+            throwing = "exc")
+    public void afterThrowingFindAccountAdvice(JoinPoint joinPoint,
+                                               Throwable exc) {
+        // print out which method we are advising on
+        String method = joinPoint
+                .getSignature()
+                .toShortString();
         System.out.println("\n=====>> Executing @AfterThrowing on method: " + method);
         // log the exception
         System.out.println("\n=====>> The exception is: " + exc);
@@ -32,9 +44,11 @@ public class MyDemoLoggingAspect {
 
     @AfterReturning(pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
             returning = "result")
-    public void afterReturningFindAccountsAdvice(
-            JoinPoint joinPoint, List<Account> result) {
-        String method = joinPoint.getSignature().toShortString();
+    public void afterReturningFindAccountsAdvice(JoinPoint joinPoint,
+                                                 List<Account> result) {
+        String method = joinPoint
+                .getSignature()
+                .toShortString();
         System.out.println("\n=====>> Executing @AfterReturning on method: " + method);
 
         // print out the results of the method call
@@ -50,9 +64,11 @@ public class MyDemoLoggingAspect {
 
     private void convertAccountNamesToUpperCase(List<Account> result) {
         // loop through accounts
-        for(Account tempAccount : result){
+        for (Account tempAccount : result) {
             // get uppercase version of name
-            String theUpperName = tempAccount.getName().toUpperCase();
+            String theUpperName = tempAccount
+                    .getName()
+                    .toUpperCase();
             // update the name on the account
             tempAccount.setName(theUpperName);
         }
