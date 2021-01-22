@@ -7,7 +7,12 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class TrafficFortuneService {
 
-    public String getFortune(){
+    public String getFortune(boolean tripwire){
+
+        if(tripwire){
+            throw new RuntimeException("Major accident! Highway is closed!");
+        }
+
         // simulate a delay
         try {
             TimeUnit.SECONDS.sleep(5);

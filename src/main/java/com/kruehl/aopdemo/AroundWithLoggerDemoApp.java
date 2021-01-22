@@ -20,7 +20,7 @@ public class AroundWithLoggerDemoApp {
         myLogger.info("\nMain Program: AroundDemoApp");
         myLogger.info("Calling getFortune");
 
-        String data = trafficFortuneService.getFortune();
+        String data = trafficFortuneService.getFortune(false);
 
         myLogger.info("\nMy fortune is: " +data);
         myLogger.info("Finished");

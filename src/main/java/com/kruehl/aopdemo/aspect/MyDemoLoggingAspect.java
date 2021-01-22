@@ -31,7 +31,17 @@ public class MyDemoLoggingAspect {
         long begin = System.currentTimeMillis();
 
         // now, lets execute the method
-        Object result = proceedingJoinPoint.proceed();
+        Object result = null;
+        try {
+            result = proceedingJoinPoint.proceed();
+
+        } catch (Exception e){
+            // log the exception
+            myLogger.warning(e.getMessage());
+
+            // give user a custom message
+            result = "Major accident! But no worries!";
+        }
 
         // get end timestamp
         long end = System.currentTimeMillis();
@@ -55,7 +65,8 @@ public class MyDemoLoggingAspect {
     }
 
 
-    @AfterThrowing(pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
+    @AfterThrowing(
+            pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
             throwing = "exc")
     public void afterThrowingFindAccountAdvice(JoinPoint joinPoint,
                                                Throwable exc) {
@@ -71,7 +82,8 @@ public class MyDemoLoggingAspect {
 
     // add a new advice for @AfterReturning on the findAccounts method
 
-    @AfterReturning(pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
+    @AfterReturning(
+            pointcut = "execution(* com.kruehl.aopdemo.dao.AccountDAO.findAccounts(..))",
             returning = "result")
     public void afterReturningFindAccountsAdvice(JoinPoint joinPoint,
                                                  List<Account> result) {

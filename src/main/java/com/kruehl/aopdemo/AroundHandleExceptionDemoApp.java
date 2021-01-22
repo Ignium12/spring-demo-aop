@@ -3,7 +3,7 @@ package com.kruehl.aopdemo;
 import com.kruehl.aopdemo.service.TrafficFortuneService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class AroundDemoApp {
+public class AroundHandleExceptionDemoApp {
 
     public static void main(String[] args) {
 
@@ -17,7 +17,8 @@ public class AroundDemoApp {
         System.out.println("\nMain Program: AroundDemoApp");
         System.out.println("Calling getFortune");
 
-        String data = trafficFortuneService.getFortune(false);
+        boolean tripwire = true;
+        String data = trafficFortuneService.getFortune(tripwire);
 
         System.out.println("\nMy fortune is: " +data);
         System.out.println("Finished");
