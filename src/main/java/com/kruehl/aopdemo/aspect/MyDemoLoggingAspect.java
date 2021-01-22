@@ -9,11 +9,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Aspect
 @Component
 @Order(2)
 public class MyDemoLoggingAspect {
+
+    private Logger myLogger = Logger.getLogger(getClass().getName());
 
     @Around("execution(* com.kruehl.aopdemo.service.*.getFortune(..))")
     public Object aroundGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
@@ -22,7 +25,7 @@ public class MyDemoLoggingAspect {
         String method = proceedingJoinPoint
                 .getSignature()
                 .toShortString();
-        System.out.println("\n=====>> Executing @After(Finally) on method: "
+        myLogger.info("\n=====>> Executing @After(Finally) on method: "
                 + method);
         // get the begin timestamp
         long begin = System.currentTimeMillis();
@@ -35,7 +38,7 @@ public class MyDemoLoggingAspect {
 
         // compute duration and display it
         long duration = end - begin;
-        System.out.println("\n=====> Duration: " + duration / 1000.0 + " seconds");
+        myLogger.info("\n=====> Duration: " + duration / 1000.0 + " seconds");
 
         return result;
     }
@@ -47,7 +50,7 @@ public class MyDemoLoggingAspect {
         String method = joinPoint
                 .getSignature()
                 .toShortString();
-        System.out.println("\n=====>> Executing @After(Finally) on method: "
+        myLogger.info("\n=====>> Executing @After(Finally) on method: "
                 + method);
     }
 
@@ -60,9 +63,9 @@ public class MyDemoLoggingAspect {
         String method = joinPoint
                 .getSignature()
                 .toShortString();
-        System.out.println("\n=====>> Executing @AfterThrowing on method: " + method);
+        myLogger.info("\n=====>> Executing @AfterThrowing on method: " + method);
         // log the exception
-        System.out.println("\n=====>> The exception is: " + exc);
+        myLogger.info("\n=====>> The exception is: " + exc);
     }
 
 
@@ -75,17 +78,17 @@ public class MyDemoLoggingAspect {
         String method = joinPoint
                 .getSignature()
                 .toShortString();
-        System.out.println("\n=====>> Executing @AfterReturning on method: " + method);
+        myLogger.info("\n=====>> Executing @AfterReturning on method: " + method);
 
         // print out the results of the method call
-        System.out.println("\n=====>> result is: " + result);
+        myLogger.info("\n=====>> result is: " + result);
 
         // post processing of the data
 
         // convert the account names to uppercase
         convertAccountNamesToUpperCase(result);
 
-        System.out.println("\n====>> result is: " + result);
+        myLogger.info("\n====>> result is: " + result);
     }
 
     private void convertAccountNamesToUpperCase(List<Account> result) {
@@ -106,12 +109,12 @@ public class MyDemoLoggingAspect {
     // @Before advice
     @Before("com.kruehl.aopdemo.aspect.AopExpressions.forDaoPackageNoGetterNoSetter()")
     public void beforeAddAccountAdvice(JoinPoint joinPoint) {
-        System.out.println("\n =====>> Executing @Before advice on method");
+        myLogger.info("\n =====>> Executing @Before advice on method");
 
         // display the method signature
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
-        System.out.println("Method: " + methodSignature);
+        myLogger.info("Method: " + methodSignature);
 
         // display method arguments
 
@@ -120,14 +123,14 @@ public class MyDemoLoggingAspect {
 
         // loop thru
         for (Object tempArg : args) {
-            System.out.println(tempArg);
+            myLogger.info(tempArg.toString());
 
             if (tempArg instanceof Account) {
                 // downcast and print Account specific stuff
                 Account account = (Account) tempArg;
 
-                System.out.println("account name: " + account.getName());
-                System.out.println("account level: " + account.getLevel());
+                myLogger.info("account name: " + account.getName());
+                myLogger.info("account level: " + account.getLevel());
             }
         }
 
